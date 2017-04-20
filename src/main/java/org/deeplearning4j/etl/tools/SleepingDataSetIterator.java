@@ -88,7 +88,7 @@ public class SleepingDataSetIterator implements DataSetIterator {
     public void printOutThroughput() {
         long finalTime = System.currentTimeMillis();
         long delta = finalTime - startingTime;
-        log.info("{} datasets were processed; {} datasets/second", limit, limit / (delta / 1000));
+        log.info("{} datasets were processed; {} datasets/second", counter.get(), counter.get() / (delta / 1000));
     }
 
     @Override
