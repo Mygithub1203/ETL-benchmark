@@ -1,8 +1,10 @@
 package org.deeplearning4j.etl.tools;
 
+import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.dataset.api.DataSetPreProcessor;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
+import org.nd4j.linalg.factory.Nd4j;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -106,7 +108,10 @@ public class SleepingDataSetIterator implements DataSetIterator {
     @Override
     public DataSet next() {
         counter.incrementAndGet();
-        DataSet ds = new DataSet();
+
+        INDArray features = Nd4j.create(8, 784);
+        INDArray labels = Nd4j.create(8, 10);
+        DataSet ds = new DataSet(features, labels);
 
         LockSupport.parkNanos(sleep * 1000000L);
 

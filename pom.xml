@@ -11,11 +11,10 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <nd4j.backend>nd4j-native</nd4j.backend>
-        <nd4j.version>0.8.0</nd4j.version>
-        <dl4j.version>0.8.0</dl4j.version>
-        <datavec.version>0.8.0</datavec.version>
-        <datavec.spark.version>0.8.0_spark_1</datavec.spark.version>
-        <scala.binary.version>2.10</scala.binary.version>
+        <nd4j.version>0.8.1-SNAPSHOT</nd4j.version>
+        <dl4j.version>0.8.1-SNAPSHOT</dl4j.version>
+        <datavec.version>0.8.1-SNAPSHOT</datavec.version>
+        <scala.binary.version>2.11</scala.binary.version>
         <spark.version>1.6.2</spark.version>
         <guava.version>19.0</guava.version>
         <slf4j.version>1.7.21</slf4j.version>
@@ -49,6 +48,12 @@
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
             <version>LATEST</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>deeplearning4j-parallel-wrapper_${scala.binary.version}</artifactId>
+            <version>${dl4j.version}</version>
         </dependency>
     </dependencies>
 

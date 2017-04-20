@@ -4,6 +4,11 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import lombok.extern.slf4j.Slf4j;
+import org.deeplearning4j.etl.tools.Modeller;
+import org.deeplearning4j.etl.tools.SleepingDataSetIterator;
+import org.deeplearning4j.etl.tools.SleepingTrainerContext;
+import org.deeplearning4j.nn.conf.WorkspaceMode;
+import org.deeplearning4j.parallelism.ParallelWrapper;
 
 /**
  * @author raver119@gmail.com
@@ -32,7 +37,17 @@ public class Simulator {
             throw e;
         }
 
+        ParallelWrapper wrapper = new ParallelWrapper.Builder<>(Modeller.getConvolutionalModel())
+                .workspaceMode(WorkspaceMode.SEPARATE)
+                .averageUpdaters(true)
+                .averagingFrequency(5)
+                .prefetchBuffer(8)
+                .workers(numWorkers)
+                .useMQ(false)
+                .trainerFactory(new SleepingTrainerContext(trainingTimeMillis))
+                .build();
 
+        wrapper.fit(new SleepingDataSetIterator(datasetTimeMillis, 10000));
     }
 
     public static void main(String[] args) throws Exception {
