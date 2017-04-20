@@ -60,8 +60,6 @@ public class CountingDataSetIterator implements DataSetIterator {
 
     @Override
     public void reset() {
-        startingTime = System.currentTimeMillis();
-        nanos.clear();
         iterator.reset();
     }
 
