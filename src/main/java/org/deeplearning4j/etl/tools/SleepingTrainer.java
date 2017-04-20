@@ -33,7 +33,7 @@ public class SleepingTrainer extends Thread implements Trainer {
      * @param dataSet the data set to train on
      */
     @Override
-    public void feedMultiDataSet(MultiDataSet dataSet) {
+    public void feedMultiDataSet(MultiDataSet dataSet, long time) {
         locker.set(true);
     }
 
@@ -43,7 +43,7 @@ public class SleepingTrainer extends Thread implements Trainer {
      * @param dataSet the data set to train on
      */
     @Override
-    public void feedDataSet(DataSet dataSet) {
+    public void feedDataSet(DataSet dataSet, long time) {
         locker.set(true);
     }
 

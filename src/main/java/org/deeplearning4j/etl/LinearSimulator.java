@@ -10,16 +10,16 @@ import org.nd4j.linalg.factory.Nd4j;
 @Slf4j
 public class LinearSimulator {
     @Parameter(names = {"-d"}, description = "Time required to produce one DataSet")
-    private int datasetTimeMillis = 35;
+    private int datasetTimeMillis = 25;
 
 
     private int[] workers = new int[]{1, 2, 4, 6, 8};
 
     @Parameter(names = {"-t"}, description = "Training time of single ParallelWrapper worker")
-    private int trainingTimeMillis = 150;
+    private int trainingTimeMillis = 100;
 
     @Parameter(names = {"-e"}, description = "Total number of examples to roll through")
-    private int totalExamples = 100;
+    private int totalExamples = 1000;
 
     public void run(String[] args) throws Exception {
         Nd4j.create(1);
