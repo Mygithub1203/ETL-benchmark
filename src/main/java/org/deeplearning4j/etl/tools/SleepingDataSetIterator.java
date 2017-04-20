@@ -20,9 +20,13 @@ public class SleepingDataSetIterator implements DataSetIterator {
     private AtomicLong counter = new AtomicLong(0);
     private long limit;
 
+    private final long startingTime;
+
     public SleepingDataSetIterator(long sleepTimeMillis, long numberOfExamples) {
         this.sleep = sleepTimeMillis;
         this.limit = numberOfExamples;
+
+        this.startingTime = System.currentTimeMillis();
     }
 
     @Override
@@ -78,6 +82,14 @@ public class SleepingDataSetIterator implements DataSetIterator {
     @Override
     public void setPreProcessor(DataSetPreProcessor dataSetPreProcessor) {
 
+    }
+
+
+    public void printOutThroughput() {
+        long finalTime = System.currentTimeMillis();
+        long delta = finalTime - startingTime;
+        log.info("{} datasets were processed", limit);
+        log.info("Throughput {} datasets/second", limit / (delta / 1000) );
     }
 
     @Override

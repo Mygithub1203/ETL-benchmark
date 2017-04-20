@@ -48,7 +48,10 @@ public class Simulator {
                 .trainerFactory(new SleepingTrainerContext(trainingTimeMillis))
                 .build();
 
-        wrapper.fit(new SleepingDataSetIterator(datasetTimeMillis, 10000));
+        SleepingDataSetIterator iterator = new SleepingDataSetIterator(datasetTimeMillis, 10000);
+        wrapper.fit(iterator);
+
+        iterator.printOutThroughput();
     }
 
     public static void main(String[] args) throws Exception {
