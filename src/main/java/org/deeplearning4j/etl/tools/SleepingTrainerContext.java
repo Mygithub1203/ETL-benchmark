@@ -48,7 +48,6 @@ public class SleepingTrainerContext implements TrainerContext {
      */
     @Override
     public Trainer create(int threadId, Model model, int rootDevice, boolean useMDS, ParallelWrapper wrapper, WorkspaceMode workspaceMode) {
-        log.info("Creating new SleepingTraner: {}", threadId);
         SleepingTrainer trainer = new SleepingTrainer(threadId, model, trainingTime);
         trainer.setDaemon(true);
         return trainer;

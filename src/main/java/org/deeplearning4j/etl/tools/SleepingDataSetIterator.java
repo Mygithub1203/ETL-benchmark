@@ -84,11 +84,14 @@ public class SleepingDataSetIterator implements DataSetIterator {
 
     }
 
-
-    public void printOutThroughput() {
+    public long getThroughput() {
         long finalTime = System.currentTimeMillis();
         long delta = finalTime - startingTime;
-        log.info("{} datasets were processed; {} datasets/second", counter.get(), counter.get() / (delta / 1000));
+        return counter.get() / (delta / 1000);
+    }
+
+    public void printOutThroughput() {
+        log.info("{} datasets were processed; {} datasets/second", counter.get(), getThroughput());
     }
 
     @Override
@@ -128,8 +131,8 @@ public class SleepingDataSetIterator implements DataSetIterator {
 
         LockSupport.parkNanos(sleep * 1000000L);
 
-        if (counter.get() % 1000 == 0)
-            printOutThroughput();
+//        if (counter.get() % 1000 == 0)
+//            printOutThroughput();
 
         return ds;
     }

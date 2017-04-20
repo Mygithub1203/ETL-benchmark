@@ -24,7 +24,7 @@ public class Simulator {
     private int datasetTimeMillis = 35;
 
     @Parameter(names = {"-w"}, description = "Number of ParallelWrapper workers")
-    private int numWorkers = 1;
+    private int numWorkers = 2;
 
     @Parameter(names = {"-t"}, description = "Training time of single ParallelWrapper worker")
     private int trainingTimeMillis = 150;
@@ -68,7 +68,7 @@ public class Simulator {
             }
         }
 
-        iterator.printOutThroughput();
+        log.info("Throughput for {} workers: {} datasets/second", numWorkers, iterator.getThroughput());
     }
 
     public static void main(String[] args) throws Exception {
