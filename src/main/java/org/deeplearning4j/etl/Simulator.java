@@ -69,6 +69,8 @@ public class Simulator {
         }
 
         log.info("Throughput for {} workers: {} datasets/second", numWorkers, iterator.getThroughput());
+        log.info("Iterator details: ");
+        iterator.printOutThroughput();
     }
 
     public static void main(String[] args) throws Exception {
