@@ -17,13 +17,13 @@ import org.deeplearning4j.parallelism.ParallelWrapper;
 public class Simulator {
 
     @Parameter(names = {"-d"}, description = "Time required to produce one DataSet")
-    private int datasetTimeMillis = 10;
+    private int datasetTimeMillis = 35;
 
     @Parameter(names = {"-w"}, description = "Number of ParallelWrapper workers")
     private int numWorkers = 4;
 
     @Parameter(names = {"-t"}, description = "Training time of single ParallelWrapper worker")
-    private int trainingTimeMillis = 50;
+    private int trainingTimeMillis = 150;
 
 
     public void run(String[] args) throws Exception {
