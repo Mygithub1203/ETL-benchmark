@@ -1,5 +1,6 @@
 package org.deeplearning4j.etl.tools;
 
+import lombok.extern.slf4j.Slf4j;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.dataset.api.DataSetPreProcessor;
@@ -11,8 +12,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
 
 /**
- * @author raver119@gmail.co,
+ * @author raver119@gmail.com
  */
+@Slf4j
 public class SleepingDataSetIterator implements DataSetIterator {
     private long sleep;
     private AtomicLong counter = new AtomicLong(0);

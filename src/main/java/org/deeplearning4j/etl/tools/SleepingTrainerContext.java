@@ -1,5 +1,6 @@
 package org.deeplearning4j.etl.tools;
 
+import lombok.extern.slf4j.Slf4j;
 import org.deeplearning4j.nn.api.Model;
 import org.deeplearning4j.nn.conf.WorkspaceMode;
 import org.deeplearning4j.optimize.api.IterationListener;
@@ -11,6 +12,7 @@ import org.deeplearning4j.parallelism.trainer.Trainer;
 /**
  * Created by raver119 on 20.04.17.
  */
+@Slf4j
 public class SleepingTrainerContext implements TrainerContext {
 
     private long trainingTime;
@@ -46,6 +48,7 @@ public class SleepingTrainerContext implements TrainerContext {
      */
     @Override
     public Trainer create(int threadId, Model model, int rootDevice, boolean useMDS, ParallelWrapper wrapper, WorkspaceMode workspaceMode) {
-        return new SleepingTrainer(model, trainingTime);
+        log.info("Creating new SleepingTraner: {}", threadId);
+        return new SleepingTrainer(threadId, model, trainingTime);
     }
 }

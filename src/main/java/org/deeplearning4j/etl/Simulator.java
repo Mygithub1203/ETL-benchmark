@@ -39,7 +39,8 @@ public class Simulator {
 
         ParallelWrapper wrapper = new ParallelWrapper.Builder<>(Modeller.getConvolutionalModel())
                 .workspaceMode(WorkspaceMode.SEPARATE)
-                .averageUpdaters(true)
+                .averageUpdaters(false)
+                .useLegacyAveraging(false)
                 .averagingFrequency(5)
                 .prefetchBuffer(8)
                 .workers(numWorkers)

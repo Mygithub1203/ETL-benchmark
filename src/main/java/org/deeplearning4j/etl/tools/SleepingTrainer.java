@@ -1,5 +1,6 @@
 package org.deeplearning4j.etl.tools;
 
+import lombok.extern.slf4j.Slf4j;
 import org.deeplearning4j.nn.api.Model;
 import org.deeplearning4j.parallelism.trainer.Trainer;
 import org.nd4j.linalg.dataset.api.DataSet;
@@ -11,16 +12,19 @@ import java.util.concurrent.locks.LockSupport;
 /**
  * @author raver119@gmail.com
  */
-public class SleepingTrainer implements Trainer {
+@Slf4j
+public class SleepingTrainer extends Thread implements Trainer {
 
     private long trainingTime;
     private final AtomicBoolean locker = new AtomicBoolean(false);
     private final AtomicBoolean shouldWork = new AtomicBoolean(true);
     private final Model model;
+    private final int threadId;
 
-    public SleepingTrainer(Model model, long trainingTime) {
+    public SleepingTrainer(int threadId, Model model, long trainingTime) {
         this.trainingTime = trainingTime;
         this.model = model;
+        this.threadId = threadId;
     }
 
     /**
@@ -104,6 +108,7 @@ public class SleepingTrainer implements Trainer {
      */
     @Override
     public void start() {
+        super.start();
         shouldWork.set(true);
     }
 
