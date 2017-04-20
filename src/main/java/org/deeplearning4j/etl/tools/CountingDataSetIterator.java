@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 public class CountingDataSetIterator implements DataSetIterator {
 
-    private final long startingTime;
+    private long startingTime;
     private final AtomicLong counter = new AtomicLong(0);
     private final DataSetIterator iterator;
     private final List<Long> nanos = new ArrayList<>();
@@ -60,6 +60,8 @@ public class CountingDataSetIterator implements DataSetIterator {
 
     @Override
     public void reset() {
+        startingTime = System.currentTimeMillis();
+        nanos.clear();
         iterator.reset();
     }
 
