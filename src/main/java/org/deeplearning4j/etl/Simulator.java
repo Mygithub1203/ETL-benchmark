@@ -7,11 +7,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.datavec.api.berkeley.Pair;
+import org.datavec.api.io.filters.RandomPathFilter;
+import org.datavec.api.io.labels.ParentPathLabelGenerator;
 import org.datavec.api.records.reader.SequenceRecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVSequenceRecordReader;
 import org.datavec.api.split.FileSplit;
+import org.datavec.api.split.InputSplit;
 import org.datavec.api.split.NumberedFileInputSplit;
+import org.datavec.image.loader.NativeImageLoader;
+import org.datavec.image.recordreader.ImageRecordReader;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
 import org.deeplearning4j.datasets.datavec.SequenceRecordReaderDataSetIterator;
 import org.deeplearning4j.datasets.iterator.AsyncDataSetIterator;
@@ -21,7 +26,10 @@ import org.deeplearning4j.etl.tools.SleepingDataSetIterator;
 import org.deeplearning4j.etl.tools.SleepingTrainerContext;
 import org.deeplearning4j.nn.conf.WorkspaceMode;
 import org.deeplearning4j.parallelism.ParallelWrapper;
+import org.nd4j.linalg.api.buffer.DataBuffer;
+import org.nd4j.linalg.api.buffer.util.DataTypeUtil;
 import org.nd4j.linalg.dataset.DataSet;
+import org.nd4j.linalg.dataset.ExistingMiniBatchDataSetIterator;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 
 import java.io.File;
@@ -74,21 +82,39 @@ public class Simulator {
 
 //        downloadUCIData();
 
-        // set up more crap
         log.info("Setting up RecordReaders...");
-        CSVRecordReader trainFeatures = new CSVRecordReader();
-        trainFeatures.initialize(new FileSplit(new File(featuresDirTrain.getAbsolutePath() + "/0.csv")));
-        int labelIndex = 599;
-        int numClasses = 256;
-        int batchSize = 32;
-        DataSetIterator myIterator = new RecordReaderDataSetIterator(trainFeatures,batchSize,labelIndex,numClasses);
+        // presaved images 72x3x96x96
+        DataSetIterator myIterator = new ExistingMiniBatchDataSetIterator(new File("/home/justin/Datasets/umdfaces_aligned_224_presave_train"),"presave-train-%d.bin");
+
+
+//        // image record reader
+//        log.info("Loading paths....");
+//        Random rng = new Random(123);
+//        ParentPathLabelGenerator labelMaker = new ParentPathLabelGenerator();
+//        File mainPath = new File("/home/justin/Datasets/umdfaces_aligned_224/");
+//        FileSplit fileSplit = new FileSplit(mainPath, NativeImageLoader.ALLOWED_FORMATS, rng);
+//        RandomPathFilter randomFilter = new RandomPathFilter(rng, NativeImageLoader.ALLOWED_FORMATS);
+//        InputSplit[] split;
+//        split = fileSplit.sample(randomFilter, 0.998, 0.002);
+//        InputSplit trainData = split[0];
+//        ImageRecordReader trainRR = new ImageRecordReader(224, 224, 3, labelMaker);
+//        trainRR.initialize(trainData);
+//        DataSetIterator myIterator = new RecordReaderDataSetIterator(trainRR,16,1, trainRR.getLabels().size());
+
+//        // standard CSV recordreader
+//        CSVRecordReader trainFeatures = new CSVRecordReader();
+//        trainFeatures.initialize(new FileSplit(new File(featuresDirTrain.getAbsolutePath() + "/0.csv")));
+//        int labelIndex = 599;
+//        int numClasses = 256;
+//        int batchSize = 32;
+//        DataSetIterator myIterator = new RecordReaderDataSetIterator(trainFeatures,batchSize,labelIndex,numClasses);
 
 //        SequenceRecordReader trainFeatures = new CSVSequenceRecordReader();
 //        trainFeatures.initialize(new NumberedFileInputSplit(featuresDirTrain.getAbsolutePath() + "/%d.csv", 0, 15999));
 //        SequenceRecordReader trainLabels = new CSVSequenceRecordReader();
 //        trainLabels.initialize(new NumberedFileInputSplit(labelsDirTrain.getAbsolutePath() + "/%d.csv", 0, 15999));
-        int miniBatchSize = 16;
-        int numLabelClasses = 160;
+//        int miniBatchSize = 16;
+//        int numLabelClasses = 160;
 //        DataSetIterator myIterator = new SequenceRecordReaderDataSetIterator(trainFeatures, trainLabels, miniBatchSize, numLabelClasses,
 //                false, SequenceRecordReaderDataSetIterator.AlignmentMode.ALIGN_END);
 
