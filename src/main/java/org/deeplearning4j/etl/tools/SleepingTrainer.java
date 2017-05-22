@@ -15,14 +15,16 @@ import java.util.concurrent.locks.LockSupport;
 @Slf4j
 public class SleepingTrainer extends Thread implements Trainer {
 
-    private long trainingTime;
+    private long ffTime;
+    private long bpTime;
     private final AtomicBoolean locker = new AtomicBoolean(false);
     private final AtomicBoolean shouldWork = new AtomicBoolean(true);
     private final Model model;
     private final int threadId;
 
-    public SleepingTrainer(int threadId, Model model, long trainingTime) {
-        this.trainingTime = trainingTime;
+    public SleepingTrainer(int threadId, Model model, long ffTime, long bpTime) {
+        this.ffTime = ffTime;
+        this.bpTime = bpTime;
         this.model = model;
         this.threadId = threadId;
     }
@@ -103,6 +105,11 @@ public class SleepingTrainer extends Thread implements Trainer {
 
     }
 
+    @Override
+    public boolean averagingRequired() {
+        return false;
+    }
+
     /**
      * Start this trainer
      */
@@ -127,7 +134,11 @@ public class SleepingTrainer extends Thread implements Trainer {
     public void run() {
         while (shouldWork.get()) {
             if (locker.get()) {
-                LockSupport.parkNanos(trainingTime * 1000000L);
+                // here we sleep till gradients are avaliable
+                LockSupport.parkNanos((ffTime + bpTime) * 1000000L);
+
+                // and now we "apply gradients" hehe
+
                 locker.set(false);
             } else {
                 LockSupport.parkNanos(1000L);

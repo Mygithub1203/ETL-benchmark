@@ -10,12 +10,20 @@ import org.deeplearning4j.parallelism.factory.TrainerContext;
 import org.deeplearning4j.parallelism.trainer.Trainer;
 
 /**
- * Created by raver119 on 20.04.17.
+ * @author raver119@gmail.com
  */
 @Slf4j
 public class SleepingTrainerContext implements TrainerContext {
 
     private long trainingTime;
+    private long ffTime;
+    private long bpTime;
+
+    public SleepingTrainerContext(long ffTime, long bpTime) {
+        this.trainingTime = ffTime + bpTime;
+        this.bpTime = bpTime;
+        this.ffTime = ffTime;
+    }
 
     public SleepingTrainerContext(long trainingTime) {
         this.trainingTime = trainingTime;
@@ -47,8 +55,8 @@ public class SleepingTrainerContext implements TrainerContext {
      * @return the created training instance
      */
     @Override
-    public Trainer create(int threadId, Model model, int rootDevice, boolean useMDS, ParallelWrapper wrapper, WorkspaceMode workspaceMode) {
-        SleepingTrainer trainer = new SleepingTrainer(threadId, model, trainingTime);
+    public Trainer create(int threadId, Model model, int rootDevice, boolean useMDS, ParallelWrapper wrapper, WorkspaceMode workspaceMode, int averagingFrequency) {
+        SleepingTrainer trainer = new SleepingTrainer(threadId, model, ffTime, bpTime);
         trainer.setDaemon(true);
         return trainer;
     }
